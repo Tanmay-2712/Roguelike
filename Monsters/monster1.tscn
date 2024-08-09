@@ -1,0 +1,107 @@
+[gd_scene load_steps=10 format=3 uid="uid://12dfe87bsw85"]
+
+[ext_resource type="Texture2D" uid="uid://d074gk2e1o0vp" path="res://Art/0x72_DungeonTilesetII_v1.7/0x72_DungeonTilesetII_v1.7/0x72_DungeonTilesetII_v1.7.png" id="1_k506y"]
+[ext_resource type="Script" path="res://Monsters/Mob_scripts/monster1.cs" id="2_fs3vs"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2y40o"]
+atlas = ExtResource("1_k506y")
+region = Rect2(16, 424, 256, 48)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bgmc2"]
+radius = 7.0
+height = 21.0
+
+[sub_resource type="Animation" id="Animation_x7l45"]
+resource_name = "Attack"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_y3bgd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_fdmgn"]
+resource_name = "walk"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cxxug"]
+_data = {
+"Attack": SubResource("Animation_x7l45"),
+"RESET": SubResource("Animation_y3bgd"),
+"walk": SubResource("Animation_fdmgn")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_m2i1d"]
+radius = 8.0
+height = 28.0
+
+[node name="Monster1" type="CharacterBody2D"]
+script = ExtResource("2_fs3vs")
+Speed = 50.0
+
+[node name="Monster" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_2y40o")
+hframes = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_bgmc2")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+visible = false
+target_position = Vector2(0, 23)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Monster")
+libraries = {
+"": SubResource("AnimationLibrary_cxxug")
+}
+autoplay = "Attack"
+speed_scale = 0.54
+
+[node name="Area2D" type="Area2D" parent="." groups=["Enemies"]]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_m2i1d")
+
+[connection signal="area_entered" from="Area2D" to="." method="Hit"]

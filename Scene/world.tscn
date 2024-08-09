@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtaama5r4513x"]
+
+[ext_resource type="PackedScene" uid="uid://tven1gawfr38" path="res://Scene/map.tscn" id="1_hmcrp"]
+[ext_resource type="PackedScene" uid="uid://4wa7owee2yxs" path="res://Scene/Hero/Hero.tscn" id="1_qkkim"]
+
+[node name="World" type="Node2D"]
+
+[node name="Map" parent="." instance=ExtResource("1_hmcrp")]
+
+[node name="Hero" parent="." instance=ExtResource("1_qkkim")]
+position = Vector2(576, 324)
