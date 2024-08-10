@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cm2lqr2sma567"]
+
+[ext_resource type="Texture2D" uid="uid://dlshl3mrvaowq" path="res://VirtualJoystickPack/SmallHandleFilledGrey.png" id="1_1dmyv"]
+[ext_resource type="Script" path="res://Scene/ExpOrb.cs" id="1_4mopt"]
+
+[node name="Exp_Orb" type="Node2D"]
+script = ExtResource("1_4mopt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 0.0390625, 0.894897, 1)
+texture_filter = 2
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("1_1dmyv")

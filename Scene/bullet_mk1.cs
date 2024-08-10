@@ -22,28 +22,12 @@ public partial class bullet_mk1 : Node2D
         Position += direction * Speed * (float)delta;
         
         // Check if the bullet has gone far off-screen and remove it if necessary
-        if (IsOffScreen())
-        {
-            QueueFree();
-        }
+
     }
-private void Area_Entered(Area2D area)
-{
-    if (area.IsInGroup("Enemies"))
-    QueueFree();
-}
-
-
-    private bool IsOffScreen()
+    private void Area_Entered(Area2D area)
     {
-        var viewportRect = GetViewportRect();
-        var globalPosition = GlobalPosition;
-        float margin = 100f; // Extra margin to ensure it's well off-screen
-
-        return globalPosition.X < viewportRect.Position.X - margin ||
-               globalPosition.X > viewportRect.End.X + margin ||
-               globalPosition.Y < viewportRect.Position.Y - margin ||
-               globalPosition.Y > viewportRect.End.Y + margin;
+        if (area.IsInGroup("Enemies"))
+        QueueFree();
     }
 
     // Property to set the target position

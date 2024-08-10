@@ -23,12 +23,12 @@ public partial class Hero : CharacterBody2D
 
     public override void _Ready()
     {
-        //animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         joyStick = GetNode<JoyStick>("UI/JoyStick");
         pointer = GetNode<Sprite2D>("Pointer");
-        marker = GetNode<Marker2D>("Marker2D");
+        marker = GetNode<Marker2D>("RayCast2D/Gun/Marker2D");
         rayCast2D = GetNode<RayCast2D>("RayCast2D");
-        //sprite = GetNode<Sprite2D>("Sprite");
+        sprite = GetNode<Sprite2D>("RayCast2D/Gun");
 
             // Setup fire timer
         fireTimer = new Timer();
@@ -49,12 +49,12 @@ public partial class Hero : CharacterBody2D
         {
             // Normalize the input to get a unit vector for direction
             velocity = input.Normalized() * Speed;
-            //animationPlayer.Play("walk");
+            animationPlayer.SpeedScale = 1.0f;
         }
         else
         {
             velocity = Vector2.Zero;
-            //animationPlayer.Play("idle");
+            animationPlayer.SpeedScale = 0.5f;
         }
 
         Velocity = velocity;
@@ -67,7 +67,6 @@ public partial class Hero : CharacterBody2D
         else
         {
             pointer.Visible = false;
-
         }
         
         Vector2 closestEnemyPosition = FindClosestEnemy();
@@ -77,7 +76,6 @@ public partial class Hero : CharacterBody2D
             Vector2 direction = (closestEnemyPosition - GlobalPosition).Normalized();
             float angle = direction.Angle();
             rayCast2D.Rotation = angle - Mathf.Pi / 2; // Adjust the rotation offset as needed
-            //sprite.Rotation = angle - Mathf.Pi / 2; // Adjust the rotation offset as needed
         }
     }
 
@@ -125,6 +123,7 @@ public partial class Hero : CharacterBody2D
 
         bulletInstance.Position = marker.GlobalPosition;
         bulletInstance.TargetPosition = targetPosition;
+      
 
 
         GetParent().AddChild(bulletInstance);

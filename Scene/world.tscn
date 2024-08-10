@@ -1,11 +1,78 @@
-[gd_scene load_steps=3 format=3 uid="uid://dtaama5r4513x"]
+[gd_scene load_steps=14 format=3 uid="uid://dtaama5r4513x"]
 
 [ext_resource type="PackedScene" uid="uid://tven1gawfr38" path="res://Scene/map.tscn" id="1_hmcrp"]
 [ext_resource type="PackedScene" uid="uid://4wa7owee2yxs" path="res://Scene/Hero/Hero.tscn" id="1_qkkim"]
+[ext_resource type="PackedScene" uid="uid://cr2svoc4a1v4w" path="res://Scene/level_manager.tscn" id="3_aqsvy"]
+[ext_resource type="PackedScene" uid="uid://cm2lqr2sma567" path="res://Scene/Exp_orb.tscn" id="4_egaod"]
+[ext_resource type="Shader" path="res://Scene/Fog.gdshader" id="5_ar7h5"]
+
+[sub_resource type="Gradient" id="Gradient_ckdvk"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7ry8w"]
+frequency = 0.0067
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ut41i"]
+width = 960
+height = 540
+seamless = true
+color_ramp = SubResource("Gradient_ckdvk")
+noise = SubResource("FastNoiseLite_7ry8w")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ert03"]
+shader = ExtResource("5_ar7h5")
+shader_parameter/density = 0.349
+shader_parameter/speed = Vector2(0.001, 0.001)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_ut41i")
+
+[sub_resource type="Gradient" id="Gradient_dynt4"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jt6e0"]
+seed = 3
+frequency = 0.0067
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3t7ju"]
+width = 960
+height = 540
+seamless = true
+color_ramp = SubResource("Gradient_dynt4")
+noise = SubResource("FastNoiseLite_jt6e0")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uklwt"]
+shader = ExtResource("5_ar7h5")
+shader_parameter/density = 0.249
+shader_parameter/speed = Vector2(0.01, 0.02)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_3t7ju")
 
 [node name="World" type="Node2D"]
 
-[node name="Map" parent="." instance=ExtResource("1_hmcrp")]
+[node name="Map" parent="." node_paths=PackedStringArray("player") instance=ExtResource("1_hmcrp")]
+player = NodePath("../Hero")
 
 [node name="Hero" parent="." instance=ExtResource("1_qkkim")]
-position = Vector2(576, 324)
+
+[node name="Level_manager" parent="." instance=ExtResource("3_aqsvy")]
+ExpOrbScene = ExtResource("4_egaod")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+layer = 2
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2(1920, 1080)
+
+[node name="Fog" type="ColorRect" parent="ParallaxBackground/ParallaxLayer"]
+material = SubResource("ShaderMaterial_ert03")
+custom_minimum_size = Vector2(1920, 1080)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Fog2" type="ColorRect" parent="ParallaxBackground/ParallaxLayer"]
+material = SubResource("ShaderMaterial_uklwt")
+custom_minimum_size = Vector2(1920, 1080)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

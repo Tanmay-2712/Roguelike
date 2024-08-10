@@ -14,7 +14,7 @@ public partial class JoyStick : Area2D
     {
         outerCircle = GetNode<Sprite2D>("Outer_circle");
         innerCircle = GetNode<Sprite2D>("Outer_circle/Inside_circle");
-        maxRadius = outerCircle.Texture.GetWidth() * outerCircle.Scale.X / 2;
+        maxRadius = outerCircle.Texture.GetWidth() * outerCircle.Scale.X / 2 - innerCircle.Texture.GetWidth() * innerCircle.Scale.X / 2;
         Joystickposition = GlobalPosition;
 
     }
@@ -26,12 +26,8 @@ public partial class JoyStick : Area2D
             if (touchEvent.Pressed)
             {
                 GlobalPosition = touchEvent.Position;
-                Vector2 localTouchPosition = touchEvent.Position - GlobalPosition;
-                if (IsPointInside(localTouchPosition))
-                {
-                    isDragging = true;
-                    touchStartPosition = localTouchPosition - innerCircle.Position;
-                }
+                isDragging = true;
+               
             }
             else
             {
@@ -44,7 +40,7 @@ public partial class JoyStick : Area2D
         else if (@event is InputEventScreenDrag dragEvent && isDragging)
         {
             Vector2 dragPosition = dragEvent.Position - GlobalPosition;
-            innerCircle.Position = (dragPosition - touchStartPosition).LimitLength(maxRadius);
+            innerCircle.Position = (dragPosition * 1).LimitLength(maxRadius);
         }
     }
 

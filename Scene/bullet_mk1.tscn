@@ -1,14 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://dh0bk8p5btp0h"]
+[gd_scene load_steps=4 format=3 uid="uid://dh0bk8p5btp0h"]
 
+[ext_resource type="Texture2D" uid="uid://dlshl3mrvaowq" path="res://VirtualJoystickPack/SmallHandleFilledGrey.png" id="1_p3jhb"]
 [ext_resource type="Script" path="res://Scene/bullet_mk1.cs" id="2_ywwv7"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3rhqw"]
-radius = 2.0
-height = 10.0
+radius = 51.0
+height = 102.0
 
 [node name="Bullet_mk1" type="Sprite2D"]
+modulate = Color(0.0870527, 0.179889, 0.825856, 1)
 z_index = 1
 texture_filter = 2
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("1_p3jhb")
+region_rect = Rect2(0, 0, 100, 100)
 script = ExtResource("2_ywwv7")
 Speed = 500.0
 
@@ -17,6 +22,7 @@ collision_layer = 8
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
 shape = SubResource("CapsuleShape2D_3rhqw")
 debug_color = Color(0.761618, 0, 0.161013, 1)
 

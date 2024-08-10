@@ -1,12 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://bj0rhrmu8vrbd"]
+[gd_scene load_steps=11 format=3 uid="uid://bj0rhrmu8vrbd"]
 
 [ext_resource type="Script" path="res://Monsters/Mob_scripts/monster2.cs" id="1_wrfhl"]
+[ext_resource type="PackedScene" uid="uid://cm2lqr2sma567" path="res://Scene/Exp_orb.tscn" id="2_l1qgu"]
 [ext_resource type="Texture2D" uid="uid://d074gk2e1o0vp" path="res://Art/0x72_DungeonTilesetII_v1.7/0x72_DungeonTilesetII_v1.7/0x72_DungeonTilesetII_v1.7.png" id="2_tjgtk"]
-[ext_resource type="Script" path="res://Monsters/Mob_scripts/StateMachine.cs" id="3_ue8nc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2y40o"]
 atlas = ExtResource("2_tjgtk")
-region = Rect2(16, 386, 256, 34)
+region = Rect2(432, 376, 64, 16)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bgmc2"]
 radius = 7.0
@@ -68,35 +68,25 @@ _data = {
 "walk": SubResource("Animation_fdmgn")
 }
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f08xx"]
+radius = 8.0
+height = 28.0
+
 [node name="Monster2" type="CharacterBody2D"]
 script = ExtResource("1_wrfhl")
-MoveSpeed = 20.0
-ChaseSpeed = 60.0
-DetectionRange = 100.0
+Speed = 50.0
+MaxHealth = 10
+ExpOrbScene = ExtResource("2_l1qgu")
 
 [node name="Monster" type="Sprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
 texture = SubResource("AtlasTexture_2y40o")
-hframes = 8
+hframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2(0, 2)
 shape = SubResource("CapsuleShape2D_bgmc2")
-
-[node name="StateMachine" type="Node2D" parent="."]
-script = ExtResource("3_ue8nc")
-
-[node name="StateLabel" type="Label" parent="."]
-visible = false
-offset_left = -29.0
-offset_top = -26.0
-offset_right = 267.0
-offset_bottom = 29.0
-scale = Vector2(0.2, 0.2)
-theme_override_font_sizes/font_size = 40
-text = "Label"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 visible = false
@@ -109,3 +99,19 @@ libraries = {
 }
 autoplay = "Attack"
 speed_scale = 0.54
+
+[node name="Area2D" type="Area2D" parent="." groups=["Enemies"]]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visible = false
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_f08xx")
+
+[node name="DamageNumber" type="Node2D" parent="."]
+position = Vector2(0, -11)
+
+[node name="Marker2D" type="Marker2D" parent="DamageNumber"]
+
+[connection signal="area_entered" from="Area2D" to="." method="Hit"]

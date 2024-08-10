@@ -56,7 +56,7 @@ public partial class MobSpawner : Node
 
         // Instance the monster
         Node2D monster = (Node2D)monsterScene.Instantiate();
-        GetTree().Root.AddChild(monster);
+        GetParent().GetParent().AddChild(monster);
         monster.GlobalPosition = spawnPoint.GlobalPosition;
         monster.AddToGroup("Enemies");
 

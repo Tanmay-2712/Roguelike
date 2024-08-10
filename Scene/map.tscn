@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://tven1gawfr38"]
+[gd_scene load_steps=5 format=3 uid="uid://tven1gawfr38"]
 
 [ext_resource type="Texture2D" uid="uid://c7nb7lotepbcy" path="res://Art/Texture/TX Tileset Grass.png" id="1_4rk7y"]
+[ext_resource type="Script" path="res://Scene/map.cs" id="1_cvmrm"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_m3j0q"]
 texture = ExtResource("1_4rk7y")
@@ -264,7 +265,9 @@ texture = ExtResource("1_4rk7y")
 [sub_resource type="TileSet" id="TileSet_jqe1w"]
 sources/0 = SubResource("TileSetAtlasSource_m3j0q")
 
-[node name="Map" type="Node2D"]
+[node name="Map" type="Node2D" node_paths=PackedStringArray("baseTileMap")]
+script = ExtResource("1_cvmrm")
+baseTileMap = NodePath("TileMap")
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_jqe1w")
