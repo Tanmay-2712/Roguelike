@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://dtaama5r4513x"]
+[gd_scene load_steps=15 format=3 uid="uid://dtaama5r4513x"]
 
 [ext_resource type="PackedScene" uid="uid://tven1gawfr38" path="res://Scene/map.tscn" id="1_hmcrp"]
 [ext_resource type="PackedScene" uid="uid://4wa7owee2yxs" path="res://Scene/Hero/Hero.tscn" id="1_qkkim"]
 [ext_resource type="PackedScene" uid="uid://cr2svoc4a1v4w" path="res://Scene/level_manager.tscn" id="3_aqsvy"]
 [ext_resource type="PackedScene" uid="uid://cm2lqr2sma567" path="res://Scene/Exp_orb.tscn" id="4_egaod"]
 [ext_resource type="Shader" path="res://Scene/Fog.gdshader" id="5_ar7h5"]
+[ext_resource type="PackedScene" uid="uid://d2xexibpt50nn" path="res://UI.tscn" id="6_tnia7"]
 
 [sub_resource type="Gradient" id="Gradient_ckdvk"]
 
@@ -21,7 +22,7 @@ noise = SubResource("FastNoiseLite_7ry8w")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ert03"]
 shader = ExtResource("5_ar7h5")
 shader_parameter/density = 0.349
-shader_parameter/speed = Vector2(0.001, 0.001)
+shader_parameter/speed = Vector2(0.009, 0.001)
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_ut41i")
 
 [sub_resource type="Gradient" id="Gradient_dynt4"]
@@ -46,9 +47,14 @@ shader_parameter/noise_texture = SubResource("NoiseTexture2D_3t7ju")
 [node name="World" type="Node2D"]
 
 [node name="Map" parent="." node_paths=PackedStringArray("player") instance=ExtResource("1_hmcrp")]
+position = Vector2(0, -1.285)
 player = NodePath("../Hero")
 
 [node name="Hero" parent="." instance=ExtResource("1_qkkim")]
+
+[node name="MobSpawner" parent="Hero" index="5" node_paths=PackedStringArray("TimeLabel")]
+InitialSpawnInterval = 1.0
+TimeLabel = NodePath("../../UI/MarginContainer/Time")
 
 [node name="Level_manager" parent="." instance=ExtResource("3_aqsvy")]
 ExpOrbScene = ExtResource("4_egaod")
@@ -57,9 +63,11 @@ ExpOrbScene = ExtResource("4_egaod")
 layer = 2
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color(1, 1, 1, 0.709804)
 motion_mirroring = Vector2(1920, 1080)
 
 [node name="Fog" type="ColorRect" parent="ParallaxBackground/ParallaxLayer"]
+modulate = Color(1, 1, 1, 0.858824)
 material = SubResource("ShaderMaterial_ert03")
 custom_minimum_size = Vector2(1920, 1080)
 anchors_preset = 15
@@ -69,6 +77,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Fog2" type="ColorRect" parent="ParallaxBackground/ParallaxLayer"]
+modulate = Color(1, 1, 1, 0.870588)
 material = SubResource("ShaderMaterial_uklwt")
 custom_minimum_size = Vector2(1920, 1080)
 anchors_preset = 15
@@ -76,3 +85,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.326126, 0.316972, 0.37671, 1)
+
+[node name="UI" parent="." instance=ExtResource("6_tnia7")]
+
+[editable path="Hero"]
+[editable path="UI"]

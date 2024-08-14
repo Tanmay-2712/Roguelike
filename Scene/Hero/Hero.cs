@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Data.Common;
 
 public partial class Hero : CharacterBody2D
 {
@@ -12,7 +13,10 @@ public partial class Hero : CharacterBody2D
     [Export] 
     public float fireRate = 1.0f; // Fire rate in seconds
 
+    [Export]
+    public float MaxHealth = 100.0f;
 
+    private float currentHealth;
     private AnimationPlayer animationPlayer;
     private JoyStick joyStick;
     private Sprite2D pointer;
@@ -20,6 +24,8 @@ public partial class Hero : CharacterBody2D
     private RayCast2D rayCast2D;
     private Sprite2D sprite;
     private Timer fireTimer;
+    private Sprite2D heroSprite;
+    private TextureProgressBar healthBar;
 
     public override void _Ready()
     {
@@ -29,8 +35,10 @@ public partial class Hero : CharacterBody2D
         marker = GetNode<Marker2D>("RayCast2D/Gun/Marker2D");
         rayCast2D = GetNode<RayCast2D>("RayCast2D");
         sprite = GetNode<Sprite2D>("RayCast2D/Gun");
+        heroSprite = GetNode<Sprite2D>("Walk");
+        healthBar = GetNode<TextureProgressBar>("HealthBar");
 
-            // Setup fire timer
+        // Setup fire timer
         fireTimer = new Timer();
         fireTimer.OneShot = false;
         fireTimer.WaitTime = fireRate; // Set fire rate
@@ -38,6 +46,11 @@ public partial class Hero : CharacterBody2D
         AddChild(fireTimer);
 
         fireTimer.Start(); // Start firing
+
+        // Initialize health
+        currentHealth = MaxHealth;
+        UpdateHealthBar();
+
     }
 
     public override void _PhysicsProcess(double delta)
@@ -47,7 +60,6 @@ public partial class Hero : CharacterBody2D
         Vector2 velocity;
         if (input != Vector2.Zero)
         {
-            // Normalize the input to get a unit vector for direction
             velocity = input.Normalized() * Speed;
             animationPlayer.SpeedScale = 1.0f;
         }
@@ -59,6 +71,16 @@ public partial class Hero : CharacterBody2D
 
         Velocity = velocity;
         MoveAndSlide();
+
+        if (input.X < 0)
+        {
+            heroSprite.FlipH = true;
+        }
+        else if (input.X > 0)
+        {
+            heroSprite.FlipH = false;
+        }
+
         if (input != Vector2.Zero)
         {
             pointer.Visible = true;
@@ -72,10 +94,9 @@ public partial class Hero : CharacterBody2D
         Vector2 closestEnemyPosition = FindClosestEnemy();
         if (closestEnemyPosition != Vector2.Zero)
         {
-            // Rotate turret towards the closest enemy
             Vector2 direction = (closestEnemyPosition - GlobalPosition).Normalized();
             float angle = direction.Angle();
-            rayCast2D.Rotation = angle - Mathf.Pi / 2; // Adjust the rotation offset as needed
+            rayCast2D.Rotation = angle - Mathf.Pi / 2;
         }
     }
 
@@ -107,7 +128,6 @@ public partial class Hero : CharacterBody2D
             var collider = rayCast2D.GetCollider();
             if (collider is Node enemy && enemy.IsInGroup("Enemies"))
             {
-                // Fire bullet
                 var closestEnemyPosition = FindClosestEnemy();
                 if (closestEnemyPosition != Vector2.Zero)
                 {
@@ -123,9 +143,34 @@ public partial class Hero : CharacterBody2D
 
         bulletInstance.Position = marker.GlobalPosition;
         bulletInstance.TargetPosition = targetPosition;
-      
-
 
         GetParent().AddChild(bulletInstance);
+    }
+
+    private void UpdateHealthBar()
+    {
+        healthBar.Value = (currentHealth / MaxHealth) * 100;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth < 0)
+        {
+            currentHealth = 0;
+            // Handle player death here
+            QueueFree(); // Or implement a proper death sequence
+        }
+        UpdateHealthBar();
+    }
+
+    private void OnAreaEntered(Area2D area)
+    {
+        if (area.IsInGroup("Enemies"))
+        {
+            // Assume the monster has a "Damage" property
+            float monsterDamage = area.GetParent().Get("Damage").As<float>();
+            TakeDamage(monsterDamage);
+        }
     }
 }

@@ -13,6 +13,8 @@ public partial class monster2 : CharacterBody2D
     public int MaxHealth = 100;
     [Export]
     public PackedScene ExpOrbScene;
+       [Export]
+    public float Damage = 10.0f;
     private int _currentHealth;
     private Node2D _player;
     private Marker2D _damagePosition;

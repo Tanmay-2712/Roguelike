@@ -9,7 +9,6 @@
 scale = Vector2(0.9, 0.9)
 script = ExtResource("1_6eb27")
 MonsterScenes = Array[PackedScene]([ExtResource("2_8rqli"), ExtResource("3_pow4s"), ExtResource("4_odbxu")])
-SpawnInterval = 0.5
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(1000, 0)

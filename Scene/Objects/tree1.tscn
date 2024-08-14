@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dbpqdyrkf4uxo"]
+
+[ext_resource type="Texture2D" uid="uid://ki36ot6bqtqp" path="res://Art/Texture/TX Plant.png" id="1_742bg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_metfa"]
+atlas = ExtResource("1_742bg")
+region = Rect2(24, 14, 350, 139)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3lvqt"]
+radius = 8.0
+height = 24.0
+
+[node name="Tree" type="CharacterBody2D"]
+
+[node name="Tree1" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_metfa")
+offset = Vector2(-0.075, -63.26)
+hframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, -4)
+shape = SubResource("CapsuleShape2D_3lvqt")

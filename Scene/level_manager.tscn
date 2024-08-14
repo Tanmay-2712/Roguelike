@@ -1,27 +1,490 @@
-[gd_scene load_steps=2 format=3 uid="uid://cr2svoc4a1v4w"]
+[gd_scene load_steps=12 format=3 uid="uid://cr2svoc4a1v4w"]
 
 [ext_resource type="Script" path="res://Scene/LevelManager.cs" id="1_0d1vf"]
+[ext_resource type="Texture2D" uid="uid://cyy77enk5asfu" path="res://Art/card_base.png" id="2_3cdyw"]
+[ext_resource type="Texture2D" uid="uid://tlvqkeh2jlmp" path="res://Art/mana_slot.png" id="3_bn1fx"]
+[ext_resource type="FontFile" uid="uid://kuec83srrmw4" path="res://Art/MemoryPro.ttf" id="4_ss168"]
+[ext_resource type="Texture2D" uid="uid://des2phvbsy7se" path="res://Art/attack_card_image.png" id="5_phgxk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pe6pm"]
+bg_color = Color(0.337692, 0.517572, 0.956294, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.600029, 0.722141, 0.983347, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yt7uy"]
+bg_color = Color(0.14393, 0.311892, 0.804877, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_5roke"]
+font = ExtResource("4_ss168")
+
+[sub_resource type="LabelSettings" id="LabelSettings_1bc2x"]
+font_size = 25
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_eewpq"]
+font_size = 25
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0lcat"]
+size = Vector2(76.225, 121.955)
 
 [node name="Level_manager" type="Node2D"]
+process_mode = 3
 script = ExtResource("1_0d1vf")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="ExperienceBar" type="ProgressBar" parent="CanvasLayer"]
-offset_right = 320.0
-offset_bottom = 40.0
-
-[node name="LevelLabel" type="Label" parent="CanvasLayer/ExperienceBar"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="ExperienceBar" type="ProgressBar" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(500, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/background = SubResource("StyleBoxFlat_pe6pm")
+theme_override_styles/fill = SubResource("StyleBoxFlat_yt7uy")
+value = 50.0
+show_percentage = false
+
+[node name="LevelLabel" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/ExperienceBar"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -36.0
+offset_top = 8.0
+offset_right = 4.0
+offset_bottom = 43.0
 grow_horizontal = 0
-grow_vertical = 0
+theme_override_colors/font_color = Color(0.973535, 0.973535, 0.973535, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 25
 text = "0
 "
 horizontal_alignment = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Upgrades_panel" type="Panel" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+
+[node name="Placeholder" type="Panel" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer"]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Card_panel1" type="Panel" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Card" type="Control" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+
+[node name="BaseCardSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel1/Card"]
+texture = ExtResource("2_3cdyw")
+
+[node name="CostDisplay" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel1/Card"]
+position = Vector2(-35, -57)
+
+[node name="CostBaseSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel1/Card/CostDisplay"]
+texture = ExtResource("3_bn1fx")
+
+[node name="CostLbl" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel1/Card/CostDisplay"]
+offset_left = -2.0
+offset_top = -8.0
+offset_right = 38.0
+offset_bottom = 15.0
+text = "1"
+label_settings = SubResource("LabelSettings_5roke")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardName" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel1/Card"]
+position = Vector2(0, -57)
+
+[node name="NameLbl" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel1/Card/CardName"]
+offset_left = -27.0
+offset_top = 1.0
+offset_right = 111.0
+offset_bottom = 36.0
+scale = Vector2(0.42, 0.42)
+size_flags_horizontal = 4
+text = "Card Name"
+label_settings = SubResource("LabelSettings_1bc2x")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardImage" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel1/Card"]
+
+[node name="CardImageSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel1/Card/CardImage"]
+position = Vector2(0, -15)
+texture = ExtResource("5_phgxk")
+
+[node name="CardDescription" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel1/Card"]
+layout_mode = 0
+offset_left = -32.0
+offset_top = 10.0
+offset_right = 181.0
+offset_bottom = 55.0
+scale = Vector2(0.3, 0.3)
+text = "Card Description"
+label_settings = SubResource("LabelSettings_eewpq")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel1/Card"]
+shape = SubResource("RectangleShape2D_0lcat")
+
+[node name="Card_panel2" type="Panel" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Card" type="Control" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+
+[node name="BaseCardSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel2/Card"]
+texture = ExtResource("2_3cdyw")
+
+[node name="CostDisplay" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel2/Card"]
+position = Vector2(-35, -57)
+
+[node name="CostBaseSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel2/Card/CostDisplay"]
+texture = ExtResource("3_bn1fx")
+
+[node name="CostLbl" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel2/Card/CostDisplay"]
+offset_left = -2.0
+offset_top = -8.0
+offset_right = 38.0
+offset_bottom = 15.0
+text = "1"
+label_settings = SubResource("LabelSettings_5roke")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardName" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel2/Card"]
+position = Vector2(0, -57)
+
+[node name="NameLbl" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel2/Card/CardName"]
+offset_left = -27.0
+offset_top = 1.0
+offset_right = 111.0
+offset_bottom = 36.0
+scale = Vector2(0.42, 0.42)
+size_flags_horizontal = 4
+text = "Card Name"
+label_settings = SubResource("LabelSettings_1bc2x")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardImage" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel2/Card"]
+
+[node name="CardImageSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel2/Card/CardImage"]
+position = Vector2(0, -15)
+texture = ExtResource("5_phgxk")
+
+[node name="CardDescription" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel2/Card"]
+layout_mode = 0
+offset_left = -32.0
+offset_top = 10.0
+offset_right = 181.0
+offset_bottom = 55.0
+scale = Vector2(0.3, 0.3)
+text = "Card Description"
+label_settings = SubResource("LabelSettings_eewpq")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel2/Card"]
+shape = SubResource("RectangleShape2D_0lcat")
+
+[node name="Card_panel3" type="Panel" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Card" type="Control" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel3"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+
+[node name="BaseCardSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel3/Card"]
+texture = ExtResource("2_3cdyw")
+
+[node name="CostDisplay" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel3/Card"]
+position = Vector2(-35, -57)
+
+[node name="CostBaseSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel3/Card/CostDisplay"]
+texture = ExtResource("3_bn1fx")
+
+[node name="CostLbl" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel3/Card/CostDisplay"]
+offset_left = -2.0
+offset_top = -8.0
+offset_right = 38.0
+offset_bottom = 15.0
+text = "1"
+label_settings = SubResource("LabelSettings_5roke")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardName" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel3/Card"]
+position = Vector2(0, -57)
+
+[node name="NameLbl" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel3/Card/CardName"]
+offset_left = -27.0
+offset_top = 1.0
+offset_right = 111.0
+offset_bottom = 36.0
+scale = Vector2(0.42, 0.42)
+size_flags_horizontal = 4
+text = "Card Name"
+label_settings = SubResource("LabelSettings_1bc2x")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardImage" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel3/Card"]
+
+[node name="CardImageSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel3/Card/CardImage"]
+position = Vector2(0, -15)
+texture = ExtResource("5_phgxk")
+
+[node name="CardDescription" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel3/Card"]
+layout_mode = 0
+offset_left = -32.0
+offset_top = 10.0
+offset_right = 181.0
+offset_bottom = 55.0
+scale = Vector2(0.3, 0.3)
+text = "Card Description"
+label_settings = SubResource("LabelSettings_eewpq")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel3/Card"]
+shape = SubResource("RectangleShape2D_0lcat")
+
+[node name="Card_panel4" type="Panel" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Card" type="Control" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel4"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+
+[node name="BaseCardSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel4/Card"]
+texture = ExtResource("2_3cdyw")
+
+[node name="CostDisplay" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel4/Card"]
+position = Vector2(-35, -57)
+
+[node name="CostBaseSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel4/Card/CostDisplay"]
+texture = ExtResource("3_bn1fx")
+
+[node name="CostLbl" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel4/Card/CostDisplay"]
+offset_left = -2.0
+offset_top = -8.0
+offset_right = 38.0
+offset_bottom = 15.0
+text = "1"
+label_settings = SubResource("LabelSettings_5roke")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardName" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel4/Card"]
+position = Vector2(0, -57)
+
+[node name="NameLbl" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel4/Card/CardName"]
+offset_left = -27.0
+offset_top = 1.0
+offset_right = 111.0
+offset_bottom = 36.0
+scale = Vector2(0.42, 0.42)
+size_flags_horizontal = 4
+text = "Card Name"
+label_settings = SubResource("LabelSettings_1bc2x")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardImage" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel4/Card"]
+
+[node name="CardImageSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel4/Card/CardImage"]
+position = Vector2(0, -15)
+texture = ExtResource("5_phgxk")
+
+[node name="CardDescription" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel4/Card"]
+layout_mode = 0
+offset_left = -32.0
+offset_top = 10.0
+offset_right = 181.0
+offset_bottom = 55.0
+scale = Vector2(0.3, 0.3)
+text = "Card Description"
+label_settings = SubResource("LabelSettings_eewpq")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel4/Card"]
+shape = SubResource("RectangleShape2D_0lcat")
+
+[node name="Card_panel5" type="Panel" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Card" type="Control" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel5"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+
+[node name="BaseCardSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel5/Card"]
+texture = ExtResource("2_3cdyw")
+
+[node name="CostDisplay" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel5/Card"]
+position = Vector2(-35, -57)
+
+[node name="CostBaseSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel5/Card/CostDisplay"]
+texture = ExtResource("3_bn1fx")
+
+[node name="CostLbl" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel5/Card/CostDisplay"]
+offset_left = -2.0
+offset_top = -8.0
+offset_right = 38.0
+offset_bottom = 15.0
+text = "1"
+label_settings = SubResource("LabelSettings_5roke")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardName" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel5/Card"]
+position = Vector2(0, -57)
+
+[node name="NameLbl" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel5/Card/CardName"]
+offset_left = -27.0
+offset_top = 1.0
+offset_right = 111.0
+offset_bottom = 36.0
+scale = Vector2(0.42, 0.42)
+size_flags_horizontal = 4
+text = "Card Name"
+label_settings = SubResource("LabelSettings_1bc2x")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardImage" type="Node2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel5/Card"]
+
+[node name="CardImageSprite" type="Sprite2D" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel5/Card/CardImage"]
+position = Vector2(0, -15)
+texture = ExtResource("5_phgxk")
+
+[node name="CardDescription" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel5/Card"]
+layout_mode = 0
+offset_left = -32.0
+offset_top = 10.0
+offset_right = 181.0
+offset_bottom = 55.0
+scale = Vector2(0.3, 0.3)
+text = "Card Description"
+label_settings = SubResource("LabelSettings_eewpq")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel5/Card"]
+shape = SubResource("RectangleShape2D_0lcat")
+
+[node name="Placeholder2" type="Panel" parent="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer"]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel2" type="Panel" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="released" from="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel1/Card/TouchScreenButton" to="." method="OnCardPressed" binds= [0]]
+[connection signal="released" from="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel2/Card/TouchScreenButton" to="." method="OnCardPressed" binds= [0]]
+[connection signal="released" from="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel3/Card/TouchScreenButton" to="." method="OnCardPressed" binds= [0]]
+[connection signal="released" from="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel4/Card/TouchScreenButton" to="." method="OnCardPressed" binds= [0]]
+[connection signal="released" from="CanvasLayer/MarginContainer/VBoxContainer/Upgrades_panel/HBoxContainer/Card_panel5/Card/TouchScreenButton" to="." method="OnCardPressed" binds= [0]]

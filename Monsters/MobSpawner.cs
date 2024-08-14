@@ -8,21 +8,31 @@ public partial class MobSpawner : Node
     public PackedScene[] MonsterScenes { get; set; }
 
     [Export]
-    public float SpawnInterval = 2.0f;
+    public float InitialSpawnInterval = 2.0f;
+
+    [Export]
+    public Label TimeLabel { get; set; }
 
     private List<Marker2D> _spawnPoints = new List<Marker2D>();
-    private int _totalSpawned = 0;
     private int _activeEnemyTypes = 1;
     private Timer _spawnTimer;
+    private Timer _gameTimer;
     private RandomNumberGenerator _rng = new RandomNumberGenerator();
+    private float _elapsedTime = 0f;
 
     public override void _Ready()
     {
         _spawnTimer = new Timer();
         AddChild(_spawnTimer);
-        _spawnTimer.WaitTime = SpawnInterval;
+        _spawnTimer.WaitTime = InitialSpawnInterval;
         _spawnTimer.Timeout += OnSpawnTimerTimeout;
         _spawnTimer.Start();
+
+        _gameTimer = new Timer();
+        AddChild(_gameTimer);
+        _gameTimer.WaitTime = 1.0f; // Update every second
+        _gameTimer.Timeout += OnGameTimerTimeout;
+        _gameTimer.Start();
 
         // Get all Marker2D children
         foreach (Node child in GetChildren())
@@ -37,6 +47,40 @@ public partial class MobSpawner : Node
     private void OnSpawnTimerTimeout()
     {
         SpawnEnemy();
+    }
+
+    private void OnGameTimerTimeout()
+    {
+        _elapsedTime += 1f;
+        UpdateTimeLabel();
+        UpdateDifficulty();
+    }
+
+    private void UpdateTimeLabel()
+    {
+        if (TimeLabel != null)
+        {
+            int minutes = (int)(_elapsedTime / 60);
+            int seconds = (int)(_elapsedTime % 60);
+            TimeLabel.Text = $"{minutes:00} : {seconds:00}";
+        }
+    }
+
+    private void UpdateDifficulty()
+    {
+        // Increase difficulty every 30 seconds
+        if (_elapsedTime % 30 == 0)
+        {
+            // Decrease spawn interval
+            _spawnTimer.WaitTime = Math.Max(0.5f, _spawnTimer.WaitTime - 0.1f);
+
+            // Increase active enemy types
+            if (_activeEnemyTypes < MonsterScenes.Length)
+            {
+                _activeEnemyTypes++;
+                GD.Print($"New enemy type unlocked! Active types: {_activeEnemyTypes}");
+            }
+        }
     }
 
     private void SpawnEnemy()
@@ -59,15 +103,6 @@ public partial class MobSpawner : Node
         GetParent().GetParent().AddChild(monster);
         monster.GlobalPosition = spawnPoint.GlobalPosition;
         monster.AddToGroup("Enemies");
-
-        _totalSpawned++;
-
-        // Check if we need to increase active enemy types
-        if (_totalSpawned % 5 == 0 && _activeEnemyTypes < MonsterScenes.Length)
-        {
-            _activeEnemyTypes++;
-            GD.Print($"New enemy type unlocked! Active types: {_activeEnemyTypes}");
-        }
 
         // Restart the timer for the next spawn
         _spawnTimer.Start();

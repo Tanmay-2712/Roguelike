@@ -9,13 +9,13 @@ public partial class map : Node2D
     private Vector2I tileMapSize;
     private Vector2I currentPlayerTileMap = Vector2I.Zero;
     private Dictionary<Vector2I, TileMap> activeTileMaps = new Dictionary<Vector2I, TileMap>();
-
+    
     public override void _Ready()
     {
         tileMapSize = baseTileMap.GetUsedRect().Size;
         UpdateTileMaps();
     }
-
+    
     public override void _Process(double delta)
     {
         Vector2I newPlayerTileMap = GetPlayerTileMap();
@@ -25,7 +25,7 @@ public partial class map : Node2D
             UpdateTileMaps();
         }
     }
-
+    
     private Vector2I GetPlayerTileMap()
     {
         Vector2 playerPos = player.GlobalPosition;
@@ -34,11 +34,11 @@ public partial class map : Node2D
             Mathf.FloorToInt(playerPos.Y / (tileMapSize.Y * baseTileMap.CellQuadrantSize))
         );
     }
-
+    
     private void UpdateTileMaps()
     {
         List<Vector2I> requiredPositions = new List<Vector2I>();
-
+        
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)
@@ -46,7 +46,7 @@ public partial class map : Node2D
                 requiredPositions.Add(currentPlayerTileMap + new Vector2I(x, y));
             }
         }
-
+        
         // Remove unnecessary tilemaps
         List<Vector2I> toRemove = new List<Vector2I>();
         foreach (var kvp in activeTileMaps)
@@ -61,7 +61,7 @@ public partial class map : Node2D
         {
             activeTileMaps.Remove(pos);
         }
-
+        
         // Add new tilemaps
         foreach (var pos in requiredPositions)
         {
